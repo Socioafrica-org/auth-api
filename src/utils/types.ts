@@ -12,6 +12,13 @@ export type LoginRequestBodyType = {
   password: string;
 };
 
-export type AccessTokenDataType = {
-  user_id: string;
+export type AccessTokenDataType =
+  | {
+      user_id: string;
+    }
+  | { email: string; mode: "change_password" | "access_app" };
+
+export type TokensType = {
+  access_token: string;
+  refresh_token: string;
 };
