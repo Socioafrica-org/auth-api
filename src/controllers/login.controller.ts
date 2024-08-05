@@ -32,14 +32,35 @@ export const login = async (
     return res.status(401).send("Invalid credentials");
 
   // * Generates the access and refresh tokens for accessing the app/validating ones' email
-  const tokens = await handle_tokens({ user_id: user._id?.toString() }, res);
+  const tokens_res = await handle_tokens(
+    { user_id: user._id?.toString(), verify_email: { email: user.email } },
+    res
+  );
 
-  if (!tokens) {
+  if (!tokens_res) {
     console.error("Could not generate tokens");
     return res.status(500).send("Internal server error");
   }
 
+  // * If the user email is NOT verified
+  if (!tokens_res.verified_email)
+    return res
+      .status(403)
+      .json({
+        message: "Unverified email address",
+        ...new TokenBodyClass(
+          tokens_res.tokens.access_token,
+          tokens_res.tokens.refresh_token
+        ),
+      });
+
+  // * If the user email is verified
   return res
     .status(200)
-    .json(new TokenBodyClass(tokens.access_token, tokens.refresh_token));
+    .json(
+      new TokenBodyClass(
+        tokens_res.tokens.access_token,
+        tokens_res.tokens.refresh_token
+      )
+    );
 };

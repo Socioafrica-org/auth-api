@@ -42,17 +42,24 @@ export const signup = async (
   }
 
   // * Generates the access and refresh tokens for accessing the app/validating ones' email
-  const tokens = await handle_tokens(
-    { user_id: created_user._id?.toString() },
+  const tokens_res = await handle_tokens(
+    {
+      user_id: created_user._id?.toString(),
+      verify_email: { email: created_user.email },
+    },
     res
   );
 
-  if (!tokens) {
+  if (!tokens_res) {
     console.error("Could not generate tokens");
     return res.status(500).send("Internal server error");
   }
 
-  return res
-    .status(201)
-    .send(new TokenBodyClass(tokens.access_token, tokens.refresh_token));
+  return res.status(403).json({
+    message: "Unverified email address",
+    ...new TokenBodyClass(
+      tokens_res.tokens.access_token,
+      tokens_res.tokens.refresh_token
+    ),
+  });
 };

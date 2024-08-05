@@ -5,6 +5,8 @@ import bodyParser from "body-parser";
 import connect_mongodb from "./utils/db.config";
 import signup_route from "./routes/signup.route";
 import login_route from "./routes/login.route";
+import otp_route from "./routes/otp.route";
+import cookieParser from "cookie-parser";
 
 // * Load the environmental variables from the .env file to the process.ENV object
 config();
@@ -27,6 +29,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 // * Configure CORS
 app.use(cors());
+// * Parse the cookies sent to the http request to the 'req.cookies' property
+app.use(cookieParser());
 // * Enable the express app to parse REST JSON data
 app.use(bodyParser.json());
 // * Enable the express app to parse REST URL encoded data
@@ -36,11 +40,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/api/signup", signup_route);
 // * Requests directed to the login endpoint
 app.use("/api/login", login_route);
+// * Requests directed to the otp endpoint
+app.use("/api/otp", otp_route);
 
 app.use("*", (req: Request, res: Response, next: NextFunction) => {
   const time = new Date(Date.now()).toString();
   console.error("NOT FOUND", req.method, req.hostname, req.path, time);
   return res.status(404).send("Not found");
+});
+
+app.use((err: any, req: Request, res: Response) => {
+  console.error(err);
+  return res.status(500).json("Internal server error");
 });
 
 app.listen(PORT, () => {
