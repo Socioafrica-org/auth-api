@@ -7,6 +7,7 @@ import signup_route from "./routes/signup.route";
 import login_route from "./routes/login.route";
 import otp_route from "./routes/otp.route";
 import cookieParser from "cookie-parser";
+import change_password_route from "./routes/change-password.route";
 
 // * Load the environmental variables from the .env file to the process.ENV object
 config();
@@ -42,6 +43,8 @@ app.use("/api/signup", signup_route);
 app.use("/api/login", login_route);
 // * Requests directed to the otp endpoint
 app.use("/api/otp", otp_route);
+// * Requests directed to the change password endpoint
+app.use("/api/change-password", change_password_route);
 
 app.use("*", (req: Request, res: Response, next: NextFunction) => {
   const time = new Date(Date.now()).toString();

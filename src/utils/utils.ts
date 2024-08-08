@@ -52,7 +52,7 @@ export const handle_tokens = async (
   res: Response
 ): Promise<{ verified_email: boolean; tokens: TokensType } | undefined> => {
   // * If the verify_email property is set, verify if the user is authenticated (verified his/her email address)...
-  // * if the user isn't authenticated
+  // * if the user isn't authenticated, and he/she's not trying to change his/her password
   // * generate access & refresh tokens to the OTP endpoints, which will later be used to access the app
   // * if he / she is authenticated,
   // * check if the user needs to change his/her password
@@ -75,8 +75,9 @@ export const handle_tokens = async (
     let tokens: TokensType | undefined;
     let email_is_verified: boolean = false;
 
-    // * If the User email is not verified (i.e. account was just created and email hasn't been verified)
-    if (!user.authenticated) {
+    // * If the User email is not verified (i.e. account was just created and email hasn't been verified), and the user's NOT trying to change his/her password
+    // ! Change to (!user.authenticated) if error
+    if (!user.authenticated && !config.verify_email.change_password) {
       // * Generate tokens to access the OTP endpoints, which wlll later be used to grant the user access to the platform
       tokens = await generate_tokens({
         access_token: {

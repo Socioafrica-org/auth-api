@@ -37,3 +37,11 @@ export type OTPTokensType = {
 };
 
 export type OTPRequestType = Request & { token_data: OTPTokenDataType };
+export type ChangePasswordRequestType<
+  T = any,
+  P = any,
+  Q = any,
+  R = any
+> = Request<T, P, Q, R> & {
+  token_data: AccessTokenDataType;
+};
