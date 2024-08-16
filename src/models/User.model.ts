@@ -1,6 +1,7 @@
 import { Schema, model } from "mongoose";
+import { TUserModel } from "../utils/types";
 
-const user_details = new Schema({
+const user_details: Schema<TUserModel> = new Schema({
   email: {
     type: String,
     required: true,

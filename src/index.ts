@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import connect_mongodb from "./utils/db.config";
 import signup_route from "./routes/signup.route";
 import login_route from "./routes/login.route";
+import users_route from "./routes/users.route";
 
 // * Load the environmental variables from the .env file to the process.ENV object
 config();
@@ -36,6 +37,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/api/signup", signup_route);
 // * Requests directed to the login endpoint
 app.use("/api/login", login_route);
+// * Requests directed to the users endpoint
+app.use("/api/users", users_route);
 
 app.use("*", (req: Request, res: Response, next: NextFunction) => {
   const time = new Date(Date.now()).toString();

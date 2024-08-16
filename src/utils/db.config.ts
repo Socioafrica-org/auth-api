@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+const DB_NAME = "socio_africa_demo_auth";
 const connect_mongodb = async () => {
   const URL =
     process.env.NODE_ENV === "dev" || process.env.NODE_ENV === "test"
@@ -7,8 +8,8 @@ const connect_mongodb = async () => {
           process.env.MONGODB_LOCAL_PASSWORD
         }@${
           process.env.MONGODB_LOCAL_HOST || "localhost:27017"
-        }/socio_africa_demo?authSource=admin`
-      : `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@mern-stack-tutorial.v1nmjcm.mongodb.net/socio_africa_demo?retryWrites=true&w=majority`;
+        }/${DB_NAME}?authSource=admin`
+      : `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@mern-stack-tutorial.v1nmjcm.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`;
 
   const con = await mongoose.connect(URL);
 
