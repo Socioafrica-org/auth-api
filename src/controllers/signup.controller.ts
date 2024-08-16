@@ -42,10 +42,17 @@ export const signup = async (
   }
 
   // * Generates the access and refresh tokens for accessing the app/validating ones' email
+  // ? Uncomment when implementing verify email feature
+  // const tokens_res = await handle_tokens(
+  //   {
+  //     user_id: created_user._id?.toString(),
+  //     verify_email: { email: created_user.email },
+  //   },
+  //   res
+  // );
   const tokens_res = await handle_tokens(
     {
       user_id: created_user._id?.toString(),
-      verify_email: { email: created_user.email },
     },
     res
   );
@@ -55,11 +62,22 @@ export const signup = async (
     return res.status(500).send("Internal server error");
   }
 
-  return res.status(403).json({
-    message: "Unverified email address",
-    ...new TokenBodyClass(
-      tokens_res.tokens.access_token,
-      tokens_res.tokens.refresh_token
-    ),
-  });
+  // ? Uncomment when implementing verify email feature
+  // return res.status(403).json({
+  //   message: "Unverified email address",
+  //   ...new TokenBodyClass(
+  //     tokens_res.tokens.access_token,
+  //     tokens_res.tokens.refresh_token
+  //   ),
+  // });
+
+  // ! Comment out when implementing the verfy email feature
+  return res
+    .status(200)
+    .json(
+      new TokenBodyClass(
+        tokens_res.tokens.access_token,
+        tokens_res.tokens.refresh_token
+      )
+    );
 };

@@ -32,8 +32,13 @@ export const login = async (
     return res.status(401).send("Invalid credentials");
 
   // * Generates the access and refresh tokens for accessing the app/validating ones' email
+  // ? Uncomment when implementing verify email feature
+  // const tokens_res = await handle_tokens(
+  //   { user_id: user._id?.toString(), verify_email: { email: user.email } },
+  //   res
+  // );
   const tokens_res = await handle_tokens(
-    { user_id: user._id?.toString(), verify_email: { email: user.email } },
+    { user_id: user._id?.toString() },
     res
   );
 
@@ -43,16 +48,15 @@ export const login = async (
   }
 
   // * If the user email is NOT verified
-  if (!tokens_res.verified_email)
-    return res
-      .status(403)
-      .json({
-        message: "Unverified email address",
-        ...new TokenBodyClass(
-          tokens_res.tokens.access_token,
-          tokens_res.tokens.refresh_token
-        ),
-      });
+  // ? Uncomment when implementing verify email feature
+  // if (!tokens_res.verified_email)
+  //   return res.status(403).json({
+  //     message: "Unverified email address",
+  //     ...new TokenBodyClass(
+  //       tokens_res.tokens.access_token,
+  //       tokens_res.tokens.refresh_token
+  //     ),
+  //   });
 
   // * If the user email is verified
   return res
