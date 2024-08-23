@@ -9,7 +9,7 @@
     "dev": "nodemon ./build/index.js",
     "build": "tsc --build",
     "watch": "tsc -w",
-    "debug": "ts-node ./src/index.ts"
+    "debug": "nodemon ./src/index.ts"
   },
   "keywords": [
     "Socio.africa"
