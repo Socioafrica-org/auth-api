@@ -19,10 +19,6 @@ export enum token_names {
   PASSWORD_REFRESH_TOKEN = "password_refresh_token",
 }
 
-// * The user token data class
-class UserTokenDataClass {
-  constructor(public user_id: string) {}
-}
 // * The response token object class
 export class TokenBodyClass {
   constructor(public access_token: string, public refresh_token: string) {}

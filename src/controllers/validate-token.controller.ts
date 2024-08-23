@@ -35,7 +35,12 @@ export const validate_access_token = async (
     }
 
     // * Return the parsed access token data in the response object
-    res.status(200).json(validate_tokens_response.token_data);
+    res
+      .status(200)
+      .json({
+        tokens: validate_tokens_response.tokens,
+        data: validate_tokens_response.token_data,
+      });
   } catch (error) {
     console.log(error);
     return res.status(500).json("Internal server error");
