@@ -38,7 +38,7 @@ export const login = async (
   //   res
   // );
   const tokens_res = await handle_tokens(
-    { user_id: user._id?.toString() },
+    { user_id: user._id?.toString(), username: user.username },
     res
   );
 

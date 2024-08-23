@@ -23,6 +23,7 @@ export type OTPTokenDataType = {
 export type AccessTokenDataType =
   | {
       user_id: string;
+      username: string;
     }
   | OTPTokenDataType;
 

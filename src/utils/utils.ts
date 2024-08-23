@@ -48,6 +48,7 @@ export const handle_tokens = async (
     verify_email?: { email: string; change_password?: boolean };
     change_password?: boolean;
     user_id: string;
+    username: string;
   },
   res: Response
 ): Promise<{ verified_email: boolean; tokens: TokensType } | undefined> => {
@@ -128,7 +129,9 @@ export const handle_tokens = async (
   if (config.change_password) {
     // * Generate access and refresh tokens to access the endpoints responsible for changing the user password
     const tokens = await generate_tokens({
-      access_token: { data: { user_id: config.user_id } },
+      access_token: {
+        data: { user_id: config.user_id, username: config.username },
+      },
       refresh_token: { expires_in: { type: "time", amount: 60 * 60 } },
     });
 
@@ -141,7 +144,9 @@ export const handle_tokens = async (
 
   // * Generate access and refresh tokens to access the app platform
   const tokens = await generate_tokens({
-    access_token: { data: { user_id: config.user_id } },
+    access_token: {
+      data: { user_id: config.user_id, username: config.username },
+    },
   });
 
   // * Set the access and refresh tokens as cookies

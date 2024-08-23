@@ -13,14 +13,14 @@ import { AccessTokenDataType } from "../utils/types";
  * @param next The Function to proceed to the next step in processing the API request
  */
 export const validate_access_token = async (
-  req: Request<any, any, { config: Request }> & {
+  req: Request<any, any, Request> & {
     token_data: AccessTokenDataType;
   },
   res: Response
 ) => {
   try {
     // * Verify if the acesss token and refresh it if it is valid
-    const extracted_tokens = extract_tokens_from_http_request(req.body.config, {
+    const extracted_tokens = extract_tokens_from_http_request(req.body, {
       cookie_access_token_name: token_names.ACCESS_TOKEN,
       cookie_refresh_token_name: token_names.REFRESH_TOKEN,
     });

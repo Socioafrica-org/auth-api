@@ -53,6 +53,7 @@ export const signup = async (
   const tokens_res = await handle_tokens(
     {
       user_id: created_user._id?.toString(),
+      username: created_user.username,
     },
     res
   );

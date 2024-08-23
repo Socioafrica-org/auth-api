@@ -139,7 +139,7 @@ export const verify_otp = async (req: OTPRequestType, res: Response) => {
     // * If the OTP mode is 'access_app', generate access and refresh tokens to access the platform
     if (req.token_data.mode === "access_app") {
       const tokens_res = await handle_tokens(
-        { user_id: user._id.toString() },
+        { user_id: user._id.toString(), username: user.username },
         res
       );
 
@@ -161,7 +161,11 @@ export const verify_otp = async (req: OTPRequestType, res: Response) => {
     // * If the mode is 'change_password', generate access and refresh tokens to change the user password
     if (req.token_data.mode === "change_password") {
       const tokens_res = await handle_tokens(
-        { user_id: user._id.toString(), change_password: true },
+        {
+          user_id: user._id.toString(),
+          change_password: true,
+          username: user.username,
+        },
         res
       );
 

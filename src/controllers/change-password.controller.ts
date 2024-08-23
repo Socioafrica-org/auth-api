@@ -32,6 +32,7 @@ export const verify_email = async (
     const tokens_res = await handle_tokens(
       {
         user_id: user._id?.toString(),
+        username: user.username,
         verify_email: { email: user.email, change_password: true },
       },
       res
