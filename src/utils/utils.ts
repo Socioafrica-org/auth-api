@@ -7,7 +7,7 @@ import UserModel from "../models/User.model";
 import nodemailer from "nodemailer";
 import Mail, { Address } from "nodemailer/lib/mailer";
 
-const jwt_secret = "jjnndnnsij193*#";
+export const jwt_secret = "jjnndnnsij193*#";
 const encode_key = "9877jh77";
 
 export enum token_names {
