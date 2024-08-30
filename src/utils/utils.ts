@@ -2,13 +2,21 @@ import { AccessTokenDataType, OTPTokensType, TokensType } from "./types";
 import { JwtPayload, sign, verify } from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
 import RefreshTokenModel from "../models/RefreshToken.model";
-import { Request, Response } from "express";
+import { CookieOptions, Request, Response } from "express";
 import UserModel from "../models/User.model";
 import nodemailer from "nodemailer";
 import Mail, { Address } from "nodemailer/lib/mailer";
+import { config } from "dotenv";
+
+config();
 
 export const jwt_secret = "jjnndnnsij193*#";
 const encode_key = "9877jh77";
+const cookie_options: CookieOptions = {
+  domain: process.env.DOMAIN || "socio.africa",
+  httpOnly: true,
+  secure: true,
+};
 
 export enum token_names {
   ACCESS_TOKEN = "access_token",
@@ -114,8 +122,16 @@ export const handle_tokens = async (
     // * If the tokens were generated
     if (tokens) {
       // * Set the OTP access and refresh tokens as cookies
-      res.cookie(token_names.OTP_ACCESS_TOKEN, tokens?.access_token);
-      res.cookie(token_names.OTP_REFRESH_TOKEN, tokens?.refresh_token);
+      res.cookie(
+        token_names.OTP_ACCESS_TOKEN,
+        tokens?.access_token,
+        cookie_options
+      );
+      res.cookie(
+        token_names.OTP_REFRESH_TOKEN,
+        tokens?.refresh_token,
+        cookie_options
+      );
 
       return { verified_email: email_is_verified, tokens: tokens };
     }
@@ -132,8 +148,16 @@ export const handle_tokens = async (
     });
 
     // * Set the access and refresh tokens as cookies
-    res.cookie(token_names.PASSWORD_ACCESS_TOKEN, tokens?.access_token);
-    res.cookie(token_names.PASSWORD_REFRESH_TOKEN, tokens?.refresh_token);
+    res.cookie(
+      token_names.PASSWORD_ACCESS_TOKEN,
+      tokens?.access_token,
+      cookie_options
+    );
+    res.cookie(
+      token_names.PASSWORD_REFRESH_TOKEN,
+      tokens?.refresh_token,
+      cookie_options
+    );
 
     return { verified_email: true, tokens: tokens };
   }
@@ -146,8 +170,8 @@ export const handle_tokens = async (
   });
 
   // * Set the access and refresh tokens as cookies
-  res.cookie(token_names.ACCESS_TOKEN, tokens?.access_token);
-  res.cookie(token_names.REFRESH_TOKEN, tokens?.refresh_token);
+  res.cookie(token_names.ACCESS_TOKEN, tokens?.access_token, cookie_options);
+  res.cookie(token_names.REFRESH_TOKEN, tokens?.refresh_token, cookie_options);
 
   return { verified_email: true, tokens: tokens };
 };
@@ -451,7 +475,8 @@ export const validate_tokens = async (
       : config.type === "change_password"
       ? token_names.PASSWORD_ACCESS_TOKEN
       : token_names.ACCESS_TOKEN,
-    access_token
+    access_token,
+    cookie_options
   );
   res.cookie(
     config.type === "otp"
@@ -459,7 +484,8 @@ export const validate_tokens = async (
       : config.type === "change_password"
       ? token_names.PASSWORD_REFRESH_TOKEN
       : token_names.REFRESH_TOKEN,
-    refreshed_token.token
+    refreshed_token.token,
+    cookie_options
   );
 
   // * Return the new access and refresh tokens
