@@ -11,7 +11,9 @@ const connect_mongodb = async () => {
         }/${DB_NAME}?authSource=admin`
       : `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@socioafrica.x73b2.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`;
 
-  const con = await mongoose.connect(URL);
+  const con = await mongoose.connect(URL, {
+    maxPoolSize: 10,
+  });
 
   if (con) console.log("CONNECTED TO MONGODB DATABASE SUCCESSFULLY");
 };

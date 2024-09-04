@@ -6,6 +6,7 @@ const user_details: Schema<TUserModel> = new Schema({
     type: String,
     required: true,
     unique: true,
+    index: true,
   },
   password: {
     required: true,
