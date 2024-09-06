@@ -385,6 +385,8 @@ const refresh_refresh_token = async (
   // * Generates a new refresh token id, and a new refresh token data off the previous one
   const new_token_id = uuidv4();
   const new_token_data = { ...(old_token as any)._doc, id: new_token_id };
+  // * Deletes the mongodb id identifier of the previous refresh token
+  delete new_token_data._id;
 
   // * Create a new refresh token with a new refresh token id
   const created_token = await RefreshTokenModel.create({
