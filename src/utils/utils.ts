@@ -124,13 +124,13 @@ export const handle_tokens = async (
       // * Set the OTP access and refresh tokens as cookies
       res.cookie(
         token_names.OTP_ACCESS_TOKEN,
-        tokens?.access_token,
-        cookie_options
+        tokens?.access_token
+        // cookie_options
       );
       res.cookie(
         token_names.OTP_REFRESH_TOKEN,
-        tokens?.refresh_token,
-        cookie_options
+        tokens?.refresh_token
+        // cookie_options
       );
 
       return { verified_email: email_is_verified, tokens: tokens };
@@ -150,13 +150,13 @@ export const handle_tokens = async (
     // * Set the access and refresh tokens as cookies
     res.cookie(
       token_names.PASSWORD_ACCESS_TOKEN,
-      tokens?.access_token,
-      cookie_options
+      tokens?.access_token
+      // cookie_options
     );
     res.cookie(
       token_names.PASSWORD_REFRESH_TOKEN,
-      tokens?.refresh_token,
-      cookie_options
+      tokens?.refresh_token
+      // cookie_options
     );
 
     return { verified_email: true, tokens: tokens };
@@ -170,8 +170,16 @@ export const handle_tokens = async (
   });
 
   // * Set the access and refresh tokens as cookies
-  res.cookie(token_names.ACCESS_TOKEN, tokens?.access_token, cookie_options);
-  res.cookie(token_names.REFRESH_TOKEN, tokens?.refresh_token, cookie_options);
+  res.cookie(
+    token_names.ACCESS_TOKEN,
+    tokens?.access_token
+    // cookie_options
+  );
+  res.cookie(
+    token_names.REFRESH_TOKEN,
+    tokens?.refresh_token
+    // cookie_options
+  );
 
   return { verified_email: true, tokens: tokens };
 };
@@ -477,8 +485,8 @@ export const validate_tokens = async (
       : config.type === "change_password"
       ? token_names.PASSWORD_ACCESS_TOKEN
       : token_names.ACCESS_TOKEN,
-    access_token,
-    cookie_options
+    access_token
+    // cookie_options
   );
   res.cookie(
     config.type === "otp"
@@ -486,8 +494,8 @@ export const validate_tokens = async (
       : config.type === "change_password"
       ? token_names.PASSWORD_REFRESH_TOKEN
       : token_names.REFRESH_TOKEN,
-    refreshed_token.token,
-    cookie_options
+    refreshed_token.token
+    // cookie_options
   );
 
   // * Return the new access and refresh tokens
