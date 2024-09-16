@@ -614,6 +614,81 @@ export const get_otp_email_template = (token: string) => {
 };
 
 /**
+ * * Function to capitalize a string
+ * @param str The string to be capitalized
+ * @returns A string with the 1st letter of every word in uppercase
+ */
+const capitalize = (str: string) => {
+  return str
+    .split(" ") // split the string by spaces into an array of words
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // capitalize first letter of each word
+    .join(" "); // join the array of words back into a string
+};
+
+/**
+ * * Function responsible for generating username string for a user
+ * @param firstname The firstname of the user whose username is to be created
+ * @param lastname The lastname of the user whose username is to be created
+ * @returns A unique string appended to the user's firstname and lastname
+ */
+const generate_unique_username = (
+  firstname: string,
+  lastname: string,
+  additional_length: number = 0
+) => {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let random_string = "";
+
+  // * Loop through the above string
+  for (let i = 0; i < 8 + additional_length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    random_string += characters.charAt(randomIndex);
+  }
+
+  return `${firstname.toLocaleLowerCase()}${capitalize(
+    lastname
+  )}_${random_string}`;
+};
+
+/**
+ * * Function responsible for creating a unique username for a user which doesn't exist in the collection
+ * @param firstname The firstname of the user whose username is to be created
+ * @param lastname The lastname of the user whose username is to be created
+ * @returns A unique username which does not exist in the collection
+ */
+export const create_username = async (firstname: string, lastname: string) => {
+  let username_to_return: string | undefined = undefined;
+
+  // * The no of times the loop has ran
+  let count = 0;
+
+  // * Creae a loop which generates a unique username, check if it exists, if it does, generate another one until a username which does not exist in the collection is created
+  while (true) {
+    // * Generate unique username
+    const username = generate_unique_username(
+      firstname,
+      lastname,
+      // * If the loop has been run 10 times or more, generate a unique username with a random string of length 13
+      count >= 10 ? 5 : 0
+    );
+    // * Check If username exists in the collection
+    const existing_username = await UserModel.findOne({ username });
+
+    // * If username doesn't exist, quit the loop and return the generated username
+    if (!existing_username) {
+      username_to_return = username;
+      break;
+    }
+
+    // * increment the loop count
+    count++;
+  }
+
+  return username_to_return;
+};
+
+/**
  * * Function responsible for sending mail to a particular email address
  * @param content The object containing the details of the email to be sent like 'from' and 'to' addresses, the email 'subject' and 'bosy'
  * @returns an array in which the first element is 'true' if the email was sent successfully and 'false' otherwise

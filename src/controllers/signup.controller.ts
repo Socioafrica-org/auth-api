@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import UserModel from "../models/User.model";
 import { SignUpRequestBodyType } from "../utils/types";
 import { hash } from "bcrypt";
-import { handle_tokens, TokenBodyClass } from "../utils/utils";
+import { create_username, handle_tokens, TokenBodyClass } from "../utils/utils";
 
 /**
  * * Creates a new user in the database if he/she doesn't exist, generates an access and refresh token for the created user
@@ -23,12 +23,15 @@ export const signup = async (
   // * If user already exists return a 409 status code
   if (user) return res.status(409).send("User already exists");
 
+  // * Creates a unique username for the user
+  const username = await create_username(body.first_name, body.last_name);
+
   // * Create a new user in the Users collection
   const created_user = await UserModel.create({
     email: body.email,
     password: await hash(body.password, 10),
     authenticated: false,
-    username: body.email,
+    username,
     metadata: {
       first_name: body.first_name,
       last_name: body.last_name,

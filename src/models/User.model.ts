@@ -16,6 +16,7 @@ const user_details: Schema<TUserModel> = new Schema({
     required: true,
     unique: true,
     type: String,
+    index: true,
   },
   authenticated: {
     type: Boolean,
