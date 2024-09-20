@@ -24,7 +24,7 @@ export const signup = async (
   if (user) return res.status(409).send("User already exists");
 
   // * Creates a unique username for the user
-  const username = await create_username(body.first_name, body.last_name);
+  const username = await create_username();
 
   // * Create a new user in the Users collection
   const created_user = await UserModel.create({

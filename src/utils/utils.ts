@@ -636,24 +636,18 @@ const capitalize = (str: string) => {
  * @param lastname The lastname of the user whose username is to be created
  * @returns A unique string appended to the user's firstname and lastname
  */
-const generate_unique_username = (
-  firstname: string,
-  lastname: string,
-  additional_length: number = 0
-) => {
+const generate_unique_username = (additional_length: number = 0) => {
   const characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   let random_string = "";
 
   // * Loop through the above string
-  for (let i = 0; i < 8 + additional_length; i++) {
+  for (let i = 0; i < 12 + additional_length; i++) {
     const randomIndex = Math.floor(Math.random() * characters.length);
     random_string += characters.charAt(randomIndex);
   }
 
-  return `${firstname.toLocaleLowerCase()}${capitalize(
-    lastname
-  )}_${random_string}`;
+  return random_string;
 };
 
 /**
@@ -662,7 +656,7 @@ const generate_unique_username = (
  * @param lastname The lastname of the user whose username is to be created
  * @returns A unique username which does not exist in the collection
  */
-export const create_username = async (firstname: string, lastname: string) => {
+export const create_username = async () => {
   let username_to_return: string | undefined = undefined;
 
   // * The no of times the loop has ran
@@ -672,8 +666,6 @@ export const create_username = async (firstname: string, lastname: string) => {
   while (true) {
     // * Generate unique username
     const username = generate_unique_username(
-      firstname,
-      lastname,
       // * If the loop has been run 10 times or more, generate a unique username with a random string of length 13
       count >= 10 ? 5 : 0
     );
