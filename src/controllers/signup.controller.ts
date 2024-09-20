@@ -81,7 +81,9 @@ export const signup = async (
     .json(
       new TokenBodyClass(
         tokens_res.tokens.access_token,
-        tokens_res.tokens.refresh_token
+        tokens_res.tokens.refresh_token,
+        created_user.username,
+        created_user.metadata.image
       )
     );
 };

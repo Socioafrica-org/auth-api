@@ -29,7 +29,12 @@ export enum token_names {
 
 // * The response token object class
 export class TokenBodyClass {
-  constructor(public access_token: string, public refresh_token: string) {}
+  constructor(
+    public access_token: string,
+    public refresh_token: string,
+    public username?: string,
+    public image?: string
+  ) {}
 }
 
 /**
