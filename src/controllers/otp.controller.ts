@@ -146,7 +146,7 @@ export const verify_otp = async (req: OTPRequestType, res: Response) => {
       // * Return 500 error if tokens couldn't be generated
       if (!tokens_res) {
         console.error("Could not generate tokens");
-        return res.status(500).send("Internal server error");
+        return res.status(500).json("Internal server error");
       }
 
       return res
@@ -172,7 +172,7 @@ export const verify_otp = async (req: OTPRequestType, res: Response) => {
       // * Return 500 error if tokens couldn't be generated
       if (!tokens_res) {
         console.error("Could not generate tokens");
-        return res.status(500).send("Internal server error");
+        return res.status(500).json("Internal server error");
       }
 
       return res

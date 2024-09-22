@@ -25,7 +25,7 @@ export const verify_email = async (
 
     if (!user) {
       console.error(`User ${email} doesn't exist`);
-      return res.status(404).send("User doesn't exist");
+      return res.status(404).json("User doesn't exist");
     }
 
     // * Generates the access and refresh tokens for validating ones' email
@@ -40,7 +40,7 @@ export const verify_email = async (
 
     if (!tokens_res) {
       console.error("Could not generate tokens");
-      return res.status(500).send("Internal server error");
+      return res.status(500).json("Internal server error");
     }
 
     // * Return a success code with the tokens to the client
@@ -81,7 +81,7 @@ export const change_password = async (
     // * If the user password wasn't updated
     if (!update_user) {
       console.error(`Couldnt't update user password`);
-      return res.status(500).send("Internal server error");
+      return res.status(500).json("Internal server error");
     }
 
     // * Return a success status if user password was updated

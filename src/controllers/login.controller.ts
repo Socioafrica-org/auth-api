@@ -24,12 +24,12 @@ export const login = async (
 
   if (!user) {
     console.error(`User ${body.email} doesn't exist`);
-    return res.status(401).send("Invalid credentials");
+    return res.status(401).json("Invalid credentials");
   }
 
   // * Validates user password
   if (!(await compare(body.password, user.password)))
-    return res.status(401).send("Invalid credentials");
+    return res.status(401).json("Invalid credentials");
 
   // * Generates the access and refresh tokens for accessing the app/validating ones' email
   // ? Uncomment when implementing verify email feature
@@ -44,7 +44,7 @@ export const login = async (
 
   if (!tokens_res) {
     console.error("Could not generate tokens");
-    return res.status(500).send("Internal server error");
+    return res.status(500).json("Internal server error");
   }
 
   // * If the user email is NOT verified

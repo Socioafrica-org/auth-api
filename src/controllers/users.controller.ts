@@ -14,7 +14,7 @@ export const get_users = async (req: Request, res: Response) => {
 
     if (!users) {
       console.error(`No users in the dtabase`);
-      return res.status(404).send("No users");
+      return res.status(404).json("No users");
     }
 
     // * List containing users and their public info only

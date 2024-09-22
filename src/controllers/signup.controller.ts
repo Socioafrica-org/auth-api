@@ -21,7 +21,7 @@ export const signup = async (
   const user = await UserModel.findOne({ email: body.email });
 
   // * If user already exists return a 409 status code
-  if (user) return res.status(409).send("User already exists");
+  if (user) return res.status(409).json("User already exists");
 
   // * Creates a unique username for the user
   const username = await create_username();
@@ -41,7 +41,7 @@ export const signup = async (
   }).catch((e) => console.error(`Could not create new user due to ${e}`));
 
   if (!created_user) {
-    return res.status(500).send("Internal server error");
+    return res.status(500).json("Internal server error");
   }
 
   // * Generates the access and refresh tokens for accessing the app/validating ones' email
@@ -63,7 +63,7 @@ export const signup = async (
 
   if (!tokens_res) {
     console.error("Could not generate tokens");
-    return res.status(500).send("Internal server error");
+    return res.status(500).json("Internal server error");
   }
 
   // ? Uncomment when implementing verify email feature
