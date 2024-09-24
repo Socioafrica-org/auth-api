@@ -9,7 +9,7 @@ import otp_route from "./routes/otp.route";
 import cookieParser from "cookie-parser";
 import change_password_route from "./routes/change-password.route";
 import users_route from "./routes/users.route";
-import validate_token_route from "./routes/validate-token.route";
+import token_route from "./routes/token.route";
 
 // * Load the environmental variables from the .env file to the process.ENV object
 config();
@@ -50,7 +50,7 @@ app.use("/api/change-password", change_password_route);
 // * Requests directed to the users endpoint
 app.use("/api/users", users_route);
 // * Requests directed to the validate token endpoint
-app.use("/api/validate-token", validate_token_route);
+app.use("/api/token", token_route);
 
 app.use("*", (req: Request, res: Response, next: NextFunction) => {
   const time = new Date(Date.now()).toString();
