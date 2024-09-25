@@ -58,9 +58,7 @@ export const decode_access_token = async (req: Request, res: Response) => {
     const decrypted_token = decode(extracted_tokens.access_token || "");
 
     // * Return the parsed access token data in the response object
-    res.status(200).json({
-      decrypted_token,
-    });
+    res.status(200).json(decrypted_token);
   } catch (error) {
     console.log(error);
     return res.status(500).json("Internal server error");
