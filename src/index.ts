@@ -10,6 +10,7 @@ import cookieParser from "cookie-parser";
 import change_password_route from "./routes/change-password.route";
 import users_route from "./routes/users.route";
 import token_route from "./routes/token.route";
+import manage_metric_middleware from "express-prometheus-middleware";
 
 // * Load the environmental variables from the .env file to the process.ENV object
 config();
@@ -22,6 +23,22 @@ const PORT = process.env.PORT || 5000;
 
 // * Configure the express app
 const app = express();
+
+// * Keep track of the application metrics
+app.use(
+  manage_metric_middleware({
+    metricsPath: "/metrics",
+    collectDefaultMetrics: true,
+    customLabels: ["app"],
+    transformLabels(labels, req) {
+      // eslint-disable-next-line no-param-reassign
+      labels.app = "socio_auth";
+    },
+    requestDurationBuckets: [0.1, 0.5, 1, 1.5, 2, 3, 5, 10],
+    requestLengthBuckets: [512, 1024, 5120, 10240, 51200, 102400],
+    responseLengthBuckets: [512, 1024, 5120, 10240, 51200, 102400],
+  })
+);
 
 // * Log the HTTP request details and time
 app.use((req: Request, res: Response, next: NextFunction) => {
